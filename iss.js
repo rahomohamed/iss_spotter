@@ -6,26 +6,26 @@
  *   - An error, if any (nullable)
  *   - The IP address as a string (null if error). Example: "162.245.144.188"
  */
-const request = require('request');
-const website = 'https://api.ipify.org?format=json';
+const request = require("request");
+const website = "https://api.ipify.org?format=json";
 
-const fetchMyIP = function(callback) { 
-request(website, (error, response, body) => {
-const data = JSON.parse(body) 
-  callback(null, data);
-  if (error) {
-    callback(error, null);
-    return;
-  }
+const fetchMyIP = function(callback) {
+  request(website, (error, response, body) => {
+    const data = JSON.parse(body);
+    callback(null, data);
+    if (error) {
+      callback(error, null);
+      return;
+    }
 
-  if (response.statusCode !== 200) {
-    const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
-    callback(Error(msg), null);
-    return;
-  } 
-  const extractIP = JSON.parse(body) 
-  callback(null, extractIP);
-})
-}  
+    if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+    const extractIP = JSON.parse(body);
+    callback(null, extractIP);
+  });
+};
 
 module.exports = { fetchMyIP };
