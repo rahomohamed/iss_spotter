@@ -23,8 +23,8 @@ const data = JSON.parse(body)
     callback(Error(msg), null);
     return;
   } 
-  const data = JSON.parse(body) 
-  callback(null, data);
+  const extractIP = JSON.parse(body) 
+  callback(null, extractIP);
 })
 }  
 
