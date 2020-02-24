@@ -7,10 +7,9 @@
  *   - The IP address as a string (null if error). Example: "162.245.144.188"
  */
 const request = require("request");
-const website = "https://api.ipify.org?format=json";
 
 const fetchMyIP = function(callback) {
-  request(website, (error, response, body) => {
+  request('https://api.ipify.org?format=json', (error, response, body) => {
     const data = JSON.parse(body);
     callback(null, data);
     if (error) {
@@ -28,4 +27,22 @@ const fetchMyIP = function(callback) {
   });
 };
 
-module.exports = { fetchMyIP };
+const fetchCoordsByIP = function(ip, callback) {
+  request(`https://ipvigilante.com/json/${ip}`, (error, response, body) => {
+    if (error) {
+      callback(error, null);
+      return;
+    }
+
+    if (response.statusCode !== 200) {
+      callback(Error(`Status Code ${response.statusCode} when fetching Coordinates for IP: ${body}`), null);
+      return;
+    }
+
+    const { latitude, longitude } = JSON.parse(body).data;
+
+    callback(null, { latitude, longitude });
+  });
+};
+
+module.exports = { fetchMyIP, fetchCoordsByIP };
